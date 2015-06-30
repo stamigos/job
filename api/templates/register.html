@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block head %}
+    <script>
+$(document).ready(function() {
+
+
+    $('form#signup').submit(function(event) {
+
+        var formData = {
+            'email'             : $('input[name=email]').val(),
+            'password'          : $('input[name=password]').val(),
+            'info'              : $('input[name=info]').val()
+        };
+
+        $.ajax({
+            type        : 'POST',
+            url         : $SCRIPT_ROOT + 'api/users',
+            data        : formData,
+            dataType    : 'json',
+            encode      : true,
+            success     : function(data) {
+                if (data.success) {
+                    console.log(data);
+                    $('#result').text("successful!");
+                }
+
+            }
+        });
+
+        event.preventDefault();
+    });
+
+    });
+
+  </script>
+{% endblock %}
+{% block body %}
+    <div class="container">
+
+         <form id="signup" class="form-signin" action="" method="post" role="form">
+             <h2 class="form-signup-heading">Please Sign Up </h2>
+             <input type="email" name="email" class="form-control" placeholder="Email address" required autofocus value="{{ request.form.email }}">
+             <input type="password" name="password" class="form-control" placeholder="Password" required value="{{ request.form.password }}">
+             <input type="text" name="info" class="form-control" placeholder="Phone Number" required value="{{ request.form.info }}">
+             <br>
+             <input id="button" class="btn btn-lg btn-primary btn-block" type="submit" value="Register">
+             <span id="result">?</span>
+         </form>
+    </div>
+
+{% endblock %}
